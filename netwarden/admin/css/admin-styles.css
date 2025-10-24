@@ -1,0 +1,410 @@
+/**
+ * Netwarden Admin Styles
+ * Modern design matching frontend theme
+ */
+
+/* ========== CSS Variables (matching frontend) ========== */
+:root {
+    /* Brand Colors */
+    --nw-blue-500: #3b82f6;
+    --nw-blue-600: #2563eb;
+    --nw-blue-700: #1d4ed8;
+    --nw-blue-800: #1e40af;
+    --nw-blue-900: #1e3a8a;
+    --nw-gray-50: #f9fafb;
+    --nw-gray-100: #f3f4f6;
+    --nw-gray-200: #e5e7eb;
+    --nw-gray-300: #d1d5db;
+    --nw-gray-500: #6b7280;
+    --nw-gray-600: #4b5563;
+    --nw-gray-700: #374151;
+    --nw-gray-800: #1f2937;
+    --nw-gray-900: #111827;
+    --nw-green-500: #10b981;
+    --nw-green-600: #059669;
+    --nw-red-500: #ef4444;
+    --nw-red-600: #dc2626;
+    --nw-amber-50: #fffbeb;
+    --nw-amber-400: #fbbf24;
+
+    /* Shadows */
+    --nw-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --nw-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --nw-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --nw-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* ========== Layout ========== */
+.netwarden-settings {
+    max-width: 1200px;
+    margin: 0;
+    padding: 0;
+    background: var(--nw-gray-50);
+}
+
+/* Remove WordPress default h1 styles and create custom header */
+.netwarden-settings > h1 {
+    display: none !important;
+}
+
+/* Custom header */
+.netwarden-header {
+    background: #ffffff;
+    border-bottom: 1px solid var(--nw-gray-200);
+    padding: 24px 32px;
+    margin: 0 0 24px -20px;
+    margin-left: -20px;
+    margin-right: -10px;
+    box-shadow: var(--nw-shadow-sm);
+}
+
+.netwarden-header-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.netwarden-logo {
+    height: 48px;
+    width: auto;
+}
+
+.netwarden-version {
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--nw-gray-100);
+    color: var(--nw-gray-600);
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* ========== Cards ========== */
+.netwarden-card {
+    background: #ffffff;
+    border: 1px solid var(--nw-gray-200);
+    border-radius: 8px;
+    box-shadow: var(--nw-shadow-sm);
+    margin: 0 0 20px 0;
+    padding: 24px 28px;
+    transition: box-shadow 0.2s ease;
+}
+
+.netwarden-card:hover {
+    box-shadow: var(--nw-shadow-md);
+}
+
+.netwarden-card h2 {
+    margin: 0 0 20px 0;
+    padding: 0 0 16px 0;
+    border-bottom: 2px solid var(--nw-gray-100);
+    color: var(--nw-gray-900);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* ========== Welcome Card ========== */
+.netwarden-welcome-card {
+    background: linear-gradient(135deg, var(--nw-blue-900) 0%, var(--nw-blue-800) 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    box-shadow: var(--nw-shadow-lg);
+    margin: 0 0 24px 0;
+    padding: 32px;
+}
+
+.netwarden-welcome-card h2 {
+    color: #ffffff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 0 0 16px 0;
+    padding: 0 0 16px 0;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.netwarden-welcome-card p {
+    line-height: 1.6;
+    margin-bottom: 16px;
+    opacity: 0.95;
+}
+
+.netwarden-welcome-card a {
+    color: #ffffff;
+    text-decoration: underline;
+    font-weight: 600;
+    text-underline-offset: 2px;
+}
+
+.netwarden-welcome-card a:hover {
+    text-decoration-thickness: 2px;
+}
+
+.netwarden-welcome-card ol {
+    margin: 16px 0;
+    padding-left: 24px;
+    line-height: 1.8;
+}
+
+.netwarden-welcome-card li {
+    margin: 12px 0;
+}
+
+/* ========== Status Display ========== */
+.netwarden-status {
+    background: var(--nw-gray-50);
+    border: 1px solid var(--nw-gray-200);
+    border-left: 4px solid var(--nw-green-500);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 20px 0;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    padding: 4px 0;
+}
+
+.status-label {
+    font-weight: 600;
+    min-width: 200px;
+    color: var(--nw-gray-700);
+    font-size: 14px;
+}
+
+.status-value {
+    color: var(--nw-gray-900);
+    font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+    font-size: 13px;
+}
+
+.status-active {
+    display: flex;
+    align-items: center;
+    color: var(--nw-green-600);
+    font-weight: 600;
+}
+
+.status-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: var(--nw-green-500);
+    border-radius: 50%;
+    margin-right: 10px;
+    animation: pulse 2s infinite;
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+}
+
+/* ========== Actions ========== */
+.netwarden-actions {
+    margin: 24px 0 0 0;
+    padding-top: 20px;
+    border-top: 1px solid var(--nw-gray-200);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.netwarden-actions .button-primary {
+    background: var(--nw-blue-900) !important;
+    border-color: var(--nw-blue-900) !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    padding: 8px 20px !important;
+    height: auto !important;
+    border-radius: 6px;
+    box-shadow: var(--nw-shadow-sm);
+    transition: all 0.2s ease;
+}
+
+.netwarden-actions .button-primary:hover {
+    background: var(--nw-blue-800) !important;
+    border-color: var(--nw-blue-800) !important;
+    box-shadow: var(--nw-shadow-md);
+    transform: translateY(-1px);
+}
+
+.netwarden-actions .button-secondary {
+    background: #ffffff !important;
+    border: 1px solid var(--nw-gray-300) !important;
+    color: var(--nw-gray-700) !important;
+    font-weight: 600;
+    padding: 8px 20px !important;
+    height: auto !important;
+    border-radius: 6px;
+    box-shadow: var(--nw-shadow-sm);
+    transition: all 0.2s ease;
+}
+
+.netwarden-actions .button-secondary:hover {
+    background: var(--nw-gray-50) !important;
+    border-color: var(--nw-gray-400) !important;
+    box-shadow: var(--nw-shadow-md);
+}
+
+/* ========== Messages ========== */
+.netwarden-message {
+    margin: 20px 0;
+    padding: 16px 20px;
+    border-left: 4px solid var(--nw-blue-500);
+    border-radius: 6px;
+    background: #f0f6fc;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.netwarden-message.success {
+    border-left-color: var(--nw-green-500);
+    background: #ecfdf5;
+    color: #065f46;
+}
+
+.netwarden-message.error {
+    border-left-color: var(--nw-red-500);
+    background: #fef2f2;
+    color: #991b1b;
+}
+
+.netwarden-message.info {
+    border-left-color: var(--nw-blue-500);
+    background: #eff6ff;
+    color: #1e40af;
+}
+
+/* ========== Form Styles ========== */
+.netwarden-card .form-table th {
+    color: var(--nw-gray-700);
+    font-weight: 600;
+    padding-top: 20px;
+}
+
+.netwarden-card .form-table td {
+    padding-top: 20px;
+}
+
+#netwarden-credentials-form input[type="text"],
+#netwarden-credentials-form input[type="password"] {
+    font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+    border: 1px solid var(--nw-gray-300);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+#netwarden-credentials-form input[type="text"]:focus,
+#netwarden-credentials-form input[type="password"]:focus {
+    border-color: var(--nw-blue-500);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    outline: none;
+}
+
+.description {
+    color: var(--nw-gray-500);
+    font-size: 13px;
+}
+
+/* ========== Metrics List ========== */
+.netwarden-metrics-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.netwarden-metrics-list li {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--nw-gray-100);
+    transition: background 0.2s ease;
+}
+
+.netwarden-metrics-list li:hover {
+    background: var(--nw-gray-50);
+}
+
+.netwarden-metrics-list li:last-child {
+    border-bottom: none;
+}
+
+.netwarden-metrics-list strong {
+    color: var(--nw-blue-600);
+    font-weight: 600;
+}
+
+/* ========== Button States ========== */
+#netwarden-save-btn:disabled,
+#netwarden-test-btn:disabled,
+#netwarden-delete-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.button-link-delete {
+    color: var(--nw-red-600) !important;
+    text-decoration: none;
+    padding: 8px 16px !important;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.button-link-delete:hover,
+.button-link-delete:focus {
+    color: var(--nw-red-600) !important;
+    background: #fef2f2 !important;
+}
+
+/* ========== Loading Spinner ========== */
+.netwarden-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(59, 130, 246, 0.2);
+    border-left-color: var(--nw-blue-600);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ========== Submit Button ========== */
+.submit .button-primary {
+    background: var(--nw-blue-900) !important;
+    border-color: var(--nw-blue-900) !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    padding: 10px 24px !important;
+    height: auto !important;
+    border-radius: 6px;
+    box-shadow: var(--nw-shadow-sm);
+    transition: all 0.2s ease;
+}
+
+.submit .button-primary:hover {
+    background: var(--nw-blue-800) !important;
+    border-color: var(--nw-blue-800) !important;
+    box-shadow: var(--nw-shadow-md);
+    transform: translateY(-1px);
+}
