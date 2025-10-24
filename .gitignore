@@ -1,0 +1,16 @@
+# Build artifacts
+dist/
+
+# macOS
+.DS_Store
+
+# WordPress plugin repository assets
+.wordpress-org/
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.bak
