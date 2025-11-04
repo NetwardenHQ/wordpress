@@ -146,7 +146,7 @@ class Netwarden_Admin {
 
         // Check user capabilities
         if (!current_user_can('manage_options')) {
-            wp_send_json_error(array('message' => __('Insufficient permissions', 'netwarden')));
+            wp_send_json_error(array('message' => esc_html__('Insufficient permissions', 'netwarden')));
         }
 
         // Get and sanitize inputs
@@ -155,28 +155,28 @@ class Netwarden_Admin {
 
         // Validate inputs
         if (empty($tenant_id) || empty($api_key)) {
-            wp_send_json_error(array('message' => __('Tenant ID and API Key are required', 'netwarden')));
+            wp_send_json_error(array('message' => esc_html__('Tenant ID and API Key are required', 'netwarden')));
         }
 
         if (!preg_match('/^[a-zA-Z0-9]{10}$/', $tenant_id)) {
-            wp_send_json_error(array('message' => __('Tenant ID must be exactly 10 alphanumeric characters', 'netwarden')));
+            wp_send_json_error(array('message' => esc_html__('Tenant ID must be exactly 10 alphanumeric characters', 'netwarden')));
         }
 
         if (strlen($api_key) > 200) {
-            wp_send_json_error(array('message' => __('API Key is too long (maximum 200 characters)', 'netwarden')));
+            wp_send_json_error(array('message' => esc_html__('API Key is too long (maximum 200 characters)', 'netwarden')));
         }
 
         if (strpos($api_key, 'nw_sk_') !== 0) {
-            wp_send_json_error(array('message' => __('API Key must start with nw_sk_', 'netwarden')));
+            wp_send_json_error(array('message' => esc_html__('API Key must start with nw_sk_', 'netwarden')));
         }
 
         // Save credentials
         $saved = Netwarden_DB::save_credentials($tenant_id, $api_key);
 
         if ($saved) {
-            wp_send_json_success(array('message' => __('Credentials saved successfully', 'netwarden')));
+            wp_send_json_success(array('message' => esc_html__('Credentials saved successfully', 'netwarden')));
         } else {
-            wp_send_json_error(array('message' => __('Failed to save credentials', 'netwarden')));
+            wp_send_json_error(array('message' => esc_html__('Failed to save credentials', 'netwarden')));
         }
     }
 
@@ -189,26 +189,26 @@ class Netwarden_Admin {
 
         // Check user capabilities
         if (!current_user_can('manage_options')) {
-            wp_send_json_error(array('message' => __('Insufficient permissions', 'netwarden')));
+            wp_send_json_error(array('message' => esc_html__('Insufficient permissions', 'netwarden')));
         }
 
         // Rate limiting: max 5 requests per minute
         if ($this->is_rate_limited('test_connection', 5, MINUTE_IN_SECONDS)) {
-            wp_send_json_error(array('message' => __('Too many requests. Please wait before trying again.', 'netwarden')));
+            wp_send_json_error(array('message' => esc_html__('Too many requests. Please wait before trying again.', 'netwarden')));
         }
 
         // Get credentials
         $credentials = Netwarden_DB::get_credentials();
 
         if (!$credentials) {
-            wp_send_json_error(array('message' => __('No credentials configured', 'netwarden')));
+            wp_send_json_error(array('message' => esc_html__('No credentials configured', 'netwarden')));
         }
 
         // Collect and send all metrics (not just test metric)
         $metrics = Netwarden_Metrics::collect_all();
 
         if (empty($metrics)) {
-            wp_send_json_error(array('message' => __('No metrics collected', 'netwarden')));
+            wp_send_json_error(array('message' => esc_html__('No metrics collected', 'netwarden')));
         }
 
         // Send to API
@@ -223,7 +223,7 @@ class Netwarden_Admin {
 
             wp_send_json_success(array(
                 /* translators: %s: API latency in milliseconds */
-                'message' => sprintf(__('Connection successful! Metrics sent. Latency: %sms', 'netwarden'), $result['latency_ms']),
+                'message' => sprintf(esc_html__('Connection successful! Metrics sent. Latency: %sms', 'netwarden'), number_format_i18n($result['latency_ms'])),
                 'latency_ms' => $result['latency_ms']
             ));
         } else {
@@ -234,7 +234,7 @@ class Netwarden_Admin {
 
             wp_send_json_error(array(
                 /* translators: %s: Error message from API */
-                'message' => sprintf(__('Connection failed: %s', 'netwarden'), $result['message'])
+                'message' => sprintf(esc_html__('Connection failed: %s', 'netwarden'), esc_html($result['message']))
             ));
         }
     }
@@ -248,7 +248,7 @@ class Netwarden_Admin {
 
         // Check user capabilities
         if (!current_user_can('manage_options')) {
-            wp_send_json_error(array('message' => __('Insufficient permissions', 'netwarden')));
+            wp_send_json_error(array('message' => esc_html__('Insufficient permissions', 'netwarden')));
         }
 
         // Delete credentials
@@ -263,9 +263,9 @@ class Netwarden_Admin {
             // Clear user's dismissed error notice
             delete_user_meta(get_current_user_id(), 'netwarden_error_dismissed');
 
-            wp_send_json_success(array('message' => __('Credentials deleted successfully', 'netwarden')));
+            wp_send_json_success(array('message' => esc_html__('Credentials deleted successfully', 'netwarden')));
         } else {
-            wp_send_json_error(array('message' => __('Failed to delete credentials', 'netwarden')));
+            wp_send_json_error(array('message' => esc_html__('Failed to delete credentials', 'netwarden')));
         }
     }
 
@@ -276,7 +276,11 @@ class Netwarden_Admin {
      * @return array Modified plugin action links
      */
     public function add_plugin_action_links($links) {
-        $settings_link = '<a href="' . esc_url(admin_url('admin.php?page=netwarden-settings')) . '">' . __('Settings', 'netwarden') . '</a>';
+        $settings_link = sprintf(
+            '<a href="%s">%s</a>',
+            esc_url(admin_url('admin.php?page=netwarden-settings')),
+            esc_html__('Settings', 'netwarden')
+        );
         array_unshift($links, $settings_link);
         return $links;
     }

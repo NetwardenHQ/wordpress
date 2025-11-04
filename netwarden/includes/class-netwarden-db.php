@@ -39,8 +39,19 @@ class Netwarden_DB {
             PRIMARY KEY (id)
         ) $charset_collate;";
 
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        dbDelta($sql);
+        // Load WordPress upgrade functions for dbDelta()
+        // Using approved WordPress exception pattern: check function, load file, use immediately
+        if (!function_exists('dbDelta')) {
+            $upgrade_file = ABSPATH . 'wp-admin/includes/upgrade.php';
+            if (file_exists($upgrade_file)) {
+                require_once $upgrade_file;
+            }
+        }
+
+        // Only attempt table creation if dbDelta is available
+        if (function_exists('dbDelta')) {
+            dbDelta($sql);
+        }
 
         // Verify table was created
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Checking if custom table exists

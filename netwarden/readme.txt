@@ -87,6 +87,51 @@ Netwarden is a lightweight, enterprise-grade monitoring plugin that helps you ke
 * Privacy-conscious organizations (GDPR/CCPA compliant)
 * Mission-critical WordPress installations
 
+== External Services ==
+
+This plugin relies on external services to function properly. Below is a complete disclosure of all external services used:
+
+= WordPress.org API =
+
+**Purpose:** To check for available WordPress core updates and security releases.
+
+**Service URL:** https://api.wordpress.org/core/version-check/1.7/
+
+**Data Sent:** Only WordPress version information from your site (e.g., "6.8") is sent to check if updates are available. No personal data or site-specific information is transmitted.
+
+**When Data is Sent:** Once every 12 hours when the plugin checks for WordPress updates. Results are cached to minimize API calls.
+
+**Terms of Service:** https://wordpress.org/about/terms/
+**Privacy Policy:** https://wordpress.org/about/privacy/
+
+= Netwarden Monitoring API =
+
+**Purpose:** To send monitoring metrics from your WordPress site to Netwarden's monitoring platform for visualization, alerting, and analysis.
+
+**Service URL:** https://api.netwarden.com/agent/data
+
+**Data Sent:**
+* Database health metrics (latency, size, connection status)
+* Disk usage statistics (total, used, free space)
+* WordPress version information
+* Plugin and theme update availability
+* Security metrics (failed login counts, SSL certificate status, admin user count)
+* Performance metrics (PHP memory usage, page load times, database query counts)
+* User activity statistics (total users, active user counts, role distribution - NO personal identifying information)
+* Site health scores
+* Plugin-specific data if installed: WooCommerce (order/product counts, sales totals), Yoast SEO (average SEO scores), UpdraftPlus (backup status)
+
+**Important:** No personal user data (names, emails, passwords, IP addresses, or content) is collected or transmitted.
+
+**When Data is Sent:** Every minute via WordPress Cron (WP-Cron) after you configure your API credentials.
+
+**Authentication:** Requires your unique Tenant ID and API Key (obtained from netwarden.com).
+
+**Terms of Service:** https://netwarden.com/terms
+**Privacy Policy:** https://netwarden.com/privacy
+
+**Note:** This plugin REQUIRES a Netwarden account to function. The monitoring data is essential for the plugin's core functionality. Without transmitting this data to Netwarden's servers, the plugin cannot provide monitoring services.
+
 == Installation ==
 
 1. Upload the `netwarden` folder to `/wp-content/plugins/`

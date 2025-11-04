@@ -34,16 +34,26 @@ if (!defined('ABSPATH')) {
             </p>
             <ol>
                 <li><?php
-                    /* translators: %s: Link to Netwarden signup page */
-                    printf(esc_html__('Sign up for a Netwarden account at %s', 'netwarden'), '<a href="https://app.netwarden.com" target="_blank">app.netwarden.com</a>');
+                    printf(
+                        /* translators: %s: Link to Netwarden signup page with HTML anchor tag */
+                        esc_html__('Sign up for a Netwarden account at %s', 'netwarden'),
+                        sprintf('<a href="%s" target="_blank">%s</a>', esc_url('https://app.netwarden.com'), esc_html('app.netwarden.com'))
+                    );
                 ?></li>
                 <li><?php
-                    /* translators: %s: Link to agent tokens settings page */
-                    printf(esc_html__('Go to %s', 'netwarden'), '<a href="https://app.netwarden.com/settings/tokens" target="_blank">' . esc_html__('Settings → Agent Tokens', 'netwarden') . '</a>');
+                    printf(
+                        /* translators: %s: Link to agent tokens settings page with HTML anchor tag */
+                        esc_html__('Go to %s', 'netwarden'),
+                        sprintf('<a href="%s" target="_blank">%s</a>', esc_url('https://app.netwarden.com/settings/tokens'), esc_html__('Settings → Agent Tokens', 'netwarden'))
+                    );
                 ?></li>
                 <li><?php
-                    /* translators: %1$s: "Tenant ID" label, %2$s: "API Key" label */
-                    printf(esc_html__('Create a new agent token and copy your %1$s and %2$s', 'netwarden'), '<strong>' . esc_html__('Tenant ID', 'netwarden') . '</strong>', '<strong>' . esc_html__('API Key', 'netwarden') . '</strong>');
+                    printf(
+                        /* translators: %1$s: Bold "Tenant ID" label in HTML strong tags, %2$s: Bold "API Key" label in HTML strong tags */
+                        esc_html__('Create a new agent token and copy your %1$s and %2$s', 'netwarden'),
+                        sprintf('<strong>%s</strong>', esc_html__('Tenant ID', 'netwarden')),
+                        sprintf('<strong>%s</strong>', esc_html__('API Key', 'netwarden'))
+                    );
                 ?></li>
                 <li><?php esc_html_e('Enter your credentials below to start monitoring', 'netwarden'); ?></li>
             </ol>
@@ -70,7 +80,7 @@ if (!defined('ABSPATH')) {
                         <span class="status-label"><?php esc_html_e('Last Metric Submission:', 'netwarden'); ?></span>
                         <span class="status-value"><?php
                             /* translators: %s: Human-readable time difference (e.g., "5 minutes") */
-                            echo esc_html(sprintf(__('%s ago', 'netwarden'), human_time_diff($last_submission, time())));
+                            echo sprintf(esc_html__('%s ago', 'netwarden'), esc_html(human_time_diff($last_submission, time())));
                         ?></span>
                     </div>
                 <?php endif; ?>
@@ -90,28 +100,28 @@ if (!defined('ABSPATH')) {
 
                             // If metrics submitted recently, show friendly message instead of "overdue"
                             if ($cron_is_working && $time_until < 0) {
-                                $time_display = __('soon', 'netwarden');
+                                $time_display = esc_html__('soon', 'netwarden');
                             } elseif ($time_until > 0) {
                                 if ($time_until < 120) {
                                     /* translators: %s: Number of seconds */
-                                    $time_display = sprintf(_n('%s second', '%s seconds', $time_until, 'netwarden'), $time_until);
+                                    $time_display = sprintf(esc_html(_n('%s second', '%s seconds', $time_until, 'netwarden')), number_format_i18n($time_until));
                                 } else {
-                                    $time_display = human_time_diff(time(), $next_cron);
+                                    $time_display = esc_html(human_time_diff(time(), $next_cron));
                                 }
                             } else {
                                 /* translators: %s: Number of seconds ago */
-                                $time_display = sprintf(__('overdue (%ss ago)', 'netwarden'), abs($time_until));
+                                $time_display = sprintf(esc_html__('overdue (%ss ago)', 'netwarden'), number_format_i18n(abs($time_until)));
                             }
                             ?>
                             <?php if (!$cron_is_working && $last_submission && $time_until < -300): ?>
                                 <span style="color: #dc3232;"><?php esc_html_e('Stopped', 'netwarden'); ?></span> <?php
                                     /* translators: %s: Human-readable time difference (e.g., "10 minutes") */
-                                    echo esc_html(sprintf(__('(last submission %s ago)', 'netwarden'), human_time_diff($last_submission, time())));
+                                    echo sprintf(esc_html__('(last submission %s ago)', 'netwarden'), esc_html(human_time_diff($last_submission, time())));
                                 ?>
                             <?php else: ?>
                                 <span style="color: #46b450;"><?php esc_html_e('Scheduled', 'netwarden'); ?></span> <?php
-                                    /* translators: %s: Time until next cron run (e.g., "30 seconds", "5 minutes") */
-                                    echo esc_html(sprintf(__('(next run in %s)', 'netwarden'), $time_display));
+                                    // translators: %s: Time until next cron run (e.g., "30 seconds", "5 minutes")
+                                    echo sprintf(esc_html__('(next run in %s)', 'netwarden'), esc_html($time_display));
                                 ?>
                             <?php endif; ?>
                         <?php elseif (!$cron_enabled): ?>
@@ -134,8 +144,11 @@ if (!defined('ABSPATH')) {
         <?php else: ?>
             <p>
                 <?php
-                /* translators: %s: Link to Netwarden agent tokens page */
-                printf(esc_html__('Enter your Netwarden credentials to start monitoring. Get your credentials from %s', 'netwarden'), '<a href="https://app.netwarden.com/settings/tokens" target="_blank">app.netwarden.com/settings/tokens</a>');
+                printf(
+                    /* translators: %s: Link to Netwarden agent tokens page with HTML anchor tag */
+                    esc_html__('Enter your Netwarden credentials to start monitoring. Get your credentials from %s', 'netwarden'),
+                    sprintf('<a href="%s" target="_blank">%s</a>', esc_url('https://app.netwarden.com/settings/tokens'), esc_html('app.netwarden.com/settings/tokens'))
+                );
                 ?>
             </p>
 
@@ -211,8 +224,11 @@ if (!defined('ABSPATH')) {
 
         <p>
             <?php
-            /* translators: %s: Link to Netwarden dashboard */
-            printf(esc_html__('Metrics are collected automatically and sent to your Netwarden dashboard at %s. Collection frequency depends on your plan.', 'netwarden'), '<a href="https://app.netwarden.com" target="_blank">app.netwarden.com</a>');
+            printf(
+                /* translators: %s: Link to Netwarden dashboard with HTML anchor tag */
+                esc_html__('Metrics are collected automatically and sent to your Netwarden dashboard at %s. Collection frequency depends on your plan.', 'netwarden'),
+                sprintf('<a href="%s" target="_blank">%s</a>', esc_url('https://app.netwarden.com'), esc_html('app.netwarden.com'))
+            );
             ?>
         </p>
     </div>
@@ -221,8 +237,12 @@ if (!defined('ABSPATH')) {
         <h2><?php esc_html_e('Support', 'netwarden'); ?></h2>
         <p>
             <?php
-            /* translators: %1$s: Link to documentation, %2$s: Support email address */
-            printf(esc_html__('Need help? Visit our %1$s or contact support at %2$s', 'netwarden'), '<a href="https://netwarden.com/docs" target="_blank">' . esc_html__('documentation', 'netwarden') . '</a>', '<a href="mailto:support@netwarden.com">support@netwarden.com</a>');
+            printf(
+                /* translators: %1$s: Link to documentation with HTML anchor tag, %2$s: Support email address with mailto link */
+                esc_html__('Need help? Visit our %1$s or contact support at %2$s', 'netwarden'),
+                sprintf('<a href="%s" target="_blank">%s</a>', esc_url('https://netwarden.com/docs'), esc_html__('documentation', 'netwarden')),
+                sprintf('<a href="mailto:%s">%s</a>', esc_attr('support@netwarden.com'), esc_html('support@netwarden.com'))
+            );
             ?>
         </p>
     </div>

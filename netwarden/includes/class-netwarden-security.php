@@ -112,7 +112,7 @@ class Netwarden_Security {
      * Sends a 401 Unauthorized JSON response and exits
      */
     public static function send_unauthorized_response() {
-        wp_send_json_error(array('message' => 'Unauthorized'), 401);
+        wp_send_json_error(array('message' => esc_html__('Unauthorized', 'netwarden')), 401);
     }
 
     /**

@@ -33,7 +33,8 @@ zip -r "$OUTPUT_DIR/${PLUGIN_NAME}.zip" "$PLUGIN_NAME/" \
     -x "*/.DS_Store" \
     -x "*.gitignore" \
     -x "*/__pycache__/*" \
-    -x "*.pyc"
+    -x "*.pyc" \
+    -x "${PLUGIN_NAME}/assets/*"
 
 # Create versioned copy
 cp "$OUTPUT_DIR/${PLUGIN_NAME}.zip" "$OUTPUT_DIR/${PLUGIN_NAME}-${VERSION}.zip"

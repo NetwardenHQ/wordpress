@@ -135,7 +135,7 @@ register_uninstall_hook(__FILE__, 'netwarden_uninstall');
 function netwarden_add_cron_interval($schedules) {
     $schedules['netwarden_1min'] = array(
         'interval' => 60,
-        'display'  => __('Every Minute', 'netwarden')
+        'display'  => esc_html__('Every Minute', 'netwarden')
     );
     return $schedules;
 }
@@ -251,6 +251,38 @@ function netwarden_init_admin() {
 add_action('plugins_loaded', 'netwarden_init_admin');
 
 /**
+ * Enqueue admin scripts and styles
+ */
+function netwarden_enqueue_admin_scripts($hook) {
+    // Only load on admin pages
+    if (!is_admin()) {
+        return;
+    }
+
+    // Enqueue admin scripts
+    wp_enqueue_script(
+        'netwarden-admin-scripts',
+        NETWARDEN_PLUGIN_URL . 'admin/js/admin-scripts.js',
+        array('jquery'),
+        NETWARDEN_VERSION,
+        true
+    );
+
+    // Localize script with nonces for notice dismissal
+    wp_localize_script(
+        'netwarden-admin-scripts',
+        'netwardenNotices',
+        array(
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'multisiteNonce' => wp_create_nonce('netwarden_dismiss_multisite'),
+            'cronNonce' => wp_create_nonce('netwarden_dismiss_cron'),
+            'errorNonce' => wp_create_nonce('netwarden_dismiss_error'),
+        )
+    );
+}
+add_action('admin_enqueue_scripts', 'netwarden_enqueue_admin_scripts');
+
+/**
  * Redirect to welcome page on activation
  */
 function netwarden_activation_redirect() {
@@ -290,16 +322,6 @@ function netwarden_admin_multisite_notice() {
             Metrics may be inaccurate or incomplete. For best results, install Netwarden on individual WordPress sites.
         </p>
     </div>
-    <script>
-    jQuery(document).ready(function($) {
-        $(document).on('click', '[data-netwarden-notice="multisite"] .notice-dismiss', function() {
-            $.post(ajaxurl, {
-                action: 'netwarden_dismiss_multisite_notice',
-                nonce: '<?php echo esc_js(wp_create_nonce('netwarden_dismiss_multisite')); ?>'
-            });
-        });
-    });
-    </script>
     <?php
 }
 add_action('admin_notices', 'netwarden_admin_multisite_notice');
@@ -357,16 +379,6 @@ function netwarden_admin_cron_notice() {
             <code>* * * * * curl -s <?php echo esc_url(site_url('wp-cron.php')); ?> &>/dev/null</code>
         </p>
     </div>
-    <script>
-    jQuery(document).ready(function($) {
-        $(document).on('click', '[data-netwarden-notice="cron"] .notice-dismiss', function() {
-            $.post(ajaxurl, {
-                action: 'netwarden_dismiss_cron_notice',
-                nonce: '<?php echo esc_js(wp_create_nonce('netwarden_dismiss_cron')); ?>'
-            });
-        });
-    });
-    </script>
     <?php
 }
 add_action('admin_notices', 'netwarden_admin_cron_notice');
@@ -402,7 +414,7 @@ function netwarden_cron_status() {
 
     // Rate limiting: max 60 requests per minute
     if (Netwarden_Security::is_rate_limited('cron_status', 60, MINUTE_IN_SECONDS)) {
-        wp_send_json_error(array('message' => 'Rate limit exceeded'), 429);
+        wp_send_json_error(array('message' => esc_html__('Rate limit exceeded', 'netwarden')), 429);
         return;
     }
 
@@ -458,16 +470,6 @@ function netwarden_admin_error_notice() {
                 </a>
             </p>
         </div>
-        <script>
-        jQuery(document).ready(function($) {
-            $(document).on('click', '[data-netwarden-notice="error"] .notice-dismiss', function() {
-                $.post(ajaxurl, {
-                    action: 'netwarden_dismiss_error_notice',
-                    nonce: '<?php echo esc_js(wp_create_nonce('netwarden_dismiss_error')); ?>'
-                });
-            });
-        });
-        </script>
         <?php
     }
 }

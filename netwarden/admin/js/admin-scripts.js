@@ -201,6 +201,39 @@
             }
         });
 
+        /**
+         * Handle admin notice dismissal
+         * Works with multisite, cron, and error notices
+         */
+        $(document).on('click', '.notice[data-netwarden-notice] .notice-dismiss', function() {
+            var $notice = $(this).closest('.notice[data-netwarden-notice]');
+            var noticeType = $notice.data('netwarden-notice');
+
+            // Map notice types to their AJAX actions
+            var actionMap = {
+                'multisite': 'netwarden_dismiss_multisite_notice',
+                'cron': 'netwarden_dismiss_cron_notice',
+                'error': 'netwarden_dismiss_error_notice'
+            };
+
+            var action = actionMap[noticeType];
+            if (!action) {
+                return;
+            }
+
+            // Get the nonce for this specific notice type
+            var nonce = netwardenNotices && netwardenNotices[noticeType + 'Nonce'];
+            if (!nonce) {
+                return;
+            }
+
+            // Send AJAX request to dismiss notice
+            $.post(netwardenNotices.ajaxUrl, {
+                action: action,
+                nonce: nonce
+            });
+        });
+
     });
 
 })(jQuery);
