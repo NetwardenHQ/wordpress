@@ -3,7 +3,7 @@
  * Plugin Name: Netwarden
  * Plugin URI: https://netwarden.com/wordpress
  * Description: Enterprise-grade infrastructure monitoring for WordPress sites with predictive alerts, automated recommendations, and health scoring. Monitor everything: database, security, performance, plugins, backups, and more.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Netwarden
  * Author URI: https://netwarden.com
  * License: GPL v2 or later
@@ -21,7 +21,7 @@ if (!defined('ABSPATH')) {
 
 // Define plugin constants (with guards to prevent redefinition)
 if (!defined('NETWARDEN_VERSION')) {
-    define('NETWARDEN_VERSION', '1.0.0');
+    define('NETWARDEN_VERSION', '1.0.1');
 }
 if (!defined('NETWARDEN_PLUGIN_DIR')) {
     define('NETWARDEN_PLUGIN_DIR', plugin_dir_path(__FILE__));

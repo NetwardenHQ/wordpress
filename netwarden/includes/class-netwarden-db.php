@@ -40,12 +40,10 @@ class Netwarden_DB {
         ) $charset_collate;";
 
         // Load WordPress upgrade functions for dbDelta()
-        // Using approved WordPress exception pattern: check function, load file, use immediately
+        // NOTE: This function is only called during plugin activation (register_activation_hook)
+        // Loading admin files is appropriate in activation context
         if (!function_exists('dbDelta')) {
-            $upgrade_file = ABSPATH . 'wp-admin/includes/upgrade.php';
-            if (file_exists($upgrade_file)) {
-                require_once $upgrade_file;
-            }
+            require_once ABSPATH . 'wp-admin/includes/upgrade.php';
         }
 
         // Only attempt table creation if dbDelta is available
@@ -71,7 +69,7 @@ class Netwarden_DB {
     public static function drop_table() {
         global $wpdb;
         $table_name = self::get_table_name();
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Table names cannot be parameterized, dropping custom table on uninstall
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table names cannot be parameterized, dropping custom table on uninstall
         $wpdb->query("DROP TABLE IF EXISTS $table_name");
     }
 
@@ -114,7 +112,7 @@ class Netwarden_DB {
         }
 
         // Check if credentials already exist
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Table names cannot be parameterized, custom table query
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table names cannot be parameterized, custom table query
         $existing = $wpdb->get_var("SELECT id FROM $table_name LIMIT 1");
 
         if ($existing) {
@@ -166,7 +164,7 @@ class Netwarden_DB {
         global $wpdb;
         $table_name = self::get_table_name();
 
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Table names cannot be parameterized, querying custom table
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table names cannot be parameterized, querying custom table
         $row = $wpdb->get_row("SELECT tenant_id, api_key FROM $table_name LIMIT 1", ARRAY_A);
 
         if (!$row) {
@@ -197,7 +195,7 @@ class Netwarden_DB {
         global $wpdb;
         $table_name = self::get_table_name();
 
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Table names cannot be parameterized, truncating custom table
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table names cannot be parameterized, truncating custom table
         $result = $wpdb->query("TRUNCATE TABLE $table_name");
         return $result !== false;
     }

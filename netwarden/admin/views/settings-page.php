@@ -85,35 +85,35 @@ if (!defined('ABSPATH')) {
                     </div>
                 <?php endif; ?>
                 <?php
-                $next_cron = wp_next_scheduled('netwarden_collect_metrics');
-                $cron_enabled = !defined('DISABLE_WP_CRON') || !DISABLE_WP_CRON;
+                $netwarden_next_cron = wp_next_scheduled('netwarden_collect_metrics');
+                $netwarden_cron_enabled = !defined('DISABLE_WP_CRON') || !DISABLE_WP_CRON;
                 ?>
                 <div class="status-item">
                     <span class="status-label"><?php esc_html_e('Cron Status:', 'netwarden'); ?></span>
                     <span class="status-value">
-                        <?php if ($cron_enabled && $next_cron): ?>
+                        <?php if ($netwarden_cron_enabled && $netwarden_next_cron): ?>
                             <?php
                             // Check if cron is actually working (submitted in last 2 minutes)
-                            $cron_is_working = $last_submission && (time() - $last_submission) <= 120;
+                            $netwarden_cron_is_working = $last_submission && (time() - $last_submission) <= 120;
 
-                            $time_until = $next_cron - time();
+                            $netwarden_time_until = $netwarden_next_cron - time();
 
                             // If metrics submitted recently, show friendly message instead of "overdue"
-                            if ($cron_is_working && $time_until < 0) {
-                                $time_display = esc_html__('soon', 'netwarden');
-                            } elseif ($time_until > 0) {
-                                if ($time_until < 120) {
+                            if ($netwarden_cron_is_working && $netwarden_time_until < 0) {
+                                $netwarden_time_display = esc_html__('soon', 'netwarden');
+                            } elseif ($netwarden_time_until > 0) {
+                                if ($netwarden_time_until < 120) {
                                     /* translators: %s: Number of seconds */
-                                    $time_display = sprintf(esc_html(_n('%s second', '%s seconds', $time_until, 'netwarden')), number_format_i18n($time_until));
+                                    $netwarden_time_display = sprintf(esc_html(_n('%s second', '%s seconds', $netwarden_time_until, 'netwarden')), number_format_i18n($netwarden_time_until));
                                 } else {
-                                    $time_display = esc_html(human_time_diff(time(), $next_cron));
+                                    $netwarden_time_display = esc_html(human_time_diff(time(), $netwarden_next_cron));
                                 }
                             } else {
                                 /* translators: %s: Number of seconds ago */
-                                $time_display = sprintf(esc_html__('overdue (%ss ago)', 'netwarden'), number_format_i18n(abs($time_until)));
+                                $netwarden_time_display = sprintf(esc_html__('overdue (%ss ago)', 'netwarden'), number_format_i18n(abs($netwarden_time_until)));
                             }
                             ?>
-                            <?php if (!$cron_is_working && $last_submission && $time_until < -300): ?>
+                            <?php if (!$netwarden_cron_is_working && $last_submission && $netwarden_time_until < -300): ?>
                                 <span style="color: #dc3232;"><?php esc_html_e('Stopped', 'netwarden'); ?></span> <?php
                                     /* translators: %s: Human-readable time difference (e.g., "10 minutes") */
                                     echo sprintf(esc_html__('(last submission %s ago)', 'netwarden'), esc_html(human_time_diff($last_submission, time())));
@@ -121,10 +121,10 @@ if (!defined('ABSPATH')) {
                             <?php else: ?>
                                 <span style="color: #46b450;"><?php esc_html_e('Scheduled', 'netwarden'); ?></span> <?php
                                     // translators: %s: Time until next cron run (e.g., "30 seconds", "5 minutes")
-                                    echo sprintf(esc_html__('(next run in %s)', 'netwarden'), esc_html($time_display));
+                                    echo sprintf(esc_html__('(next run in %s)', 'netwarden'), esc_html($netwarden_time_display));
                                 ?>
                             <?php endif; ?>
-                        <?php elseif (!$cron_enabled): ?>
+                        <?php elseif (!$netwarden_cron_enabled): ?>
                             <span style="color: #dc3232;"><?php esc_html_e('WP-Cron Disabled', 'netwarden'); ?></span>
                         <?php else: ?>
                             <span style="color: #ffb900;"><?php esc_html_e('Not Scheduled', 'netwarden'); ?></span>

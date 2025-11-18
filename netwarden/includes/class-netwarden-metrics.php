@@ -238,119 +238,32 @@ class Netwarden_Metrics {
         );
 
         // Plugin updates available
-        // Load admin files to ensure premium plugins can register their updates
-        // Using approved WordPress exception pattern: check function, load file, use immediately
-        if (!function_exists('get_plugins')) {
-            $plugin_file = ABSPATH . 'wp-admin/includes/plugin.php';
-            if (file_exists($plugin_file)) {
-                require_once $plugin_file;
-            }
-        }
-        if (!function_exists('get_plugin_updates')) {
-            $update_file = ABSPATH . 'wp-admin/includes/update.php';
-            if (file_exists($update_file)) {
-                require_once $update_file;
-            }
-        }
-
-        // Check if update information is available, trigger check if needed
-        $plugin_updates_transient = get_site_transient('update_plugins');
-
-        // If transient is empty or very old, force a check
-        if (!$plugin_updates_transient || empty($plugin_updates_transient->checked)) {
-            // Include update functions if not already loaded
-            // Using approved WordPress exception pattern: check function, load file, use immediately
-            if (!function_exists('wp_update_plugins')) {
-                $update_file = ABSPATH . 'wp-includes/update.php';
-                if (file_exists($update_file)) {
-                    require_once $update_file;
-                }
-            }
-
-            // Force plugin update check (only if function is available)
-            if (function_exists('wp_update_plugins')) {
-                wp_update_plugins();
-            }
-        }
-
-        // Get plugin updates using both methods for accuracy
-        // Method 1: WordPress's standard function (may filter out some plugins)
-        $plugin_updates = get_plugin_updates();
-        $plugin_updates_count = count($plugin_updates);
-
-        // Method 2: Direct transient check (more comprehensive)
+        // Read from WordPress's automatically maintained transient cache
+        // WordPress updates this transient via wp_version_check cron (runs every 12 hours)
+        // No need to force update checks or load admin files
         $update_plugins = get_site_transient('update_plugins');
-        $transient_count = 0;
-        if (isset($update_plugins->response) && is_array($update_plugins->response)) {
-            $transient_count = count($update_plugins->response);
-        }
+        $plugin_updates_count = 0;
 
-        // Use the higher count (transient is usually more accurate)
-        $final_count = max($plugin_updates_count, $transient_count);
-
-        // Debug logging: Log which plugins have updates available
-        if ($plugin_updates_count > 0) {
-            $plugin_names = array();
-            foreach ($plugin_updates as $plugin_file => $plugin_data) {
-                $plugin_names[] = isset($plugin_data->Name) ? $plugin_data->Name : basename($plugin_file);
-            }
-            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging for monitoring plugin
-            error_log('Netwarden: get_plugin_updates() found ' . $plugin_updates_count . ' updates: ' . implode(', ', $plugin_names));
-        }
-
-        // Log transient data for comparison
-        if ($transient_count > 0 && isset($update_plugins->response)) {
-            $transient_plugins = array_keys($update_plugins->response);
-            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging for monitoring plugin
-            error_log('Netwarden: Transient shows ' . $transient_count . ' updates: ' . implode(', ', array_map('basename', $transient_plugins)));
-        }
-
-        // Log if there's a discrepancy
-        if ($transient_count !== $plugin_updates_count) {
-            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging for monitoring plugin
-            error_log('Netwarden: Using max count of ' . $final_count . ' (get_plugin_updates=' . $plugin_updates_count . ', transient=' . $transient_count . ')');
+        if ($update_plugins && isset($update_plugins->response) && is_array($update_plugins->response)) {
+            $plugin_updates_count = count($update_plugins->response);
         }
 
         $metrics[] = array(
             'metric_name' => 'plugin_updates_available_count',
-            'value' => $final_count,
+            'value' => $plugin_updates_count,
             'labels' => array('type' => 'wordpress')
         );
 
         // Theme updates available
-        // Load admin functions for theme updates (already loaded above for plugins)
-        // Using approved WordPress exception pattern: check function, load file, use immediately
-        if (!function_exists('get_theme_updates')) {
-            $update_file = ABSPATH . 'wp-admin/includes/update.php';
-            if (file_exists($update_file)) {
-                require_once $update_file;
-            }
+        // Read from WordPress's automatically maintained transient cache
+        // WordPress updates this transient via wp_version_check cron (runs every 12 hours)
+        // No need to force update checks or load admin files
+        $update_themes = get_site_transient('update_themes');
+        $theme_updates_count = 0;
+
+        if ($update_themes && isset($update_themes->response) && is_array($update_themes->response)) {
+            $theme_updates_count = count($update_themes->response);
         }
-
-        // Check if update information is available, trigger check if needed
-        $theme_updates_transient = get_site_transient('update_themes');
-
-        // If transient is empty or very old, force a check
-        if (!$theme_updates_transient || empty($theme_updates_transient->checked)) {
-            // Include update functions if not already loaded
-            // Using approved WordPress exception pattern: check function, load file, use immediately
-            if (!function_exists('wp_update_themes')) {
-                $update_file = ABSPATH . 'wp-includes/update.php';
-                if (file_exists($update_file)) {
-                    require_once $update_file;
-                }
-            }
-
-            // Force theme update check (only if function is available)
-            if (function_exists('wp_update_themes')) {
-                wp_update_themes();
-            }
-        }
-
-        // Use WordPress's own function to get theme updates
-        // This properly handles all themes including premium ones
-        $theme_updates = get_theme_updates();
-        $theme_updates_count = count($theme_updates);
 
         $metrics[] = array(
             'metric_name' => 'theme_updates_available_count',
@@ -437,24 +350,19 @@ class Netwarden_Metrics {
         );
 
         // 2. Admin user count (security risk if excessive)
-        // Using approved WordPress exception pattern: check function, load file, use immediately
-        if (!function_exists('count_users')) {
-            $user_file = ABSPATH . 'wp-includes/user.php';
-            if (file_exists($user_file)) {
-                require_once $user_file;
-            }
-        }
-
-        // Only collect metric if function is available
-        $admin_count = 0;
-        if (function_exists('count_users')) {
-            $users = count_users();
-            $admin_count = isset($users['avail_roles']['administrator']) ? $users['avail_roles']['administrator'] : 0;
-        }
+        // Use direct SQL query instead of loading wp-includes/user.php
+        global $wpdb;
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Counting admin users for security metrics, cached in parent function
+        $admin_count = $wpdb->get_var(
+            "SELECT COUNT(DISTINCT user_id)
+            FROM {$wpdb->usermeta}
+            WHERE meta_key = '{$wpdb->prefix}capabilities'
+            AND meta_value LIKE '%\"administrator\"%'"
+        );
 
         $metrics[] = array(
             'metric_name' => 'security_admin_users',
-            'value' => (int) $admin_count,
+            'value' => (int) ($admin_count ? $admin_count : 0),
             'labels' => array()
         );
 
@@ -669,25 +577,16 @@ class Netwarden_Metrics {
         }
 
         try {
-            // 1. Total users count
-            // Using approved WordPress exception pattern: check function, load file, use immediately
-            if (!function_exists('count_users')) {
-                $user_file = ABSPATH . 'wp-includes/user.php';
-                if (file_exists($user_file)) {
-                    require_once $user_file;
-                }
-            }
+            global $wpdb;
 
-            // Only collect metric if function is available
-            $total_users = 0;
-            if (function_exists('count_users')) {
-                $user_count = count_users();
-                $total_users = isset($user_count['total_users']) ? $user_count['total_users'] : 0;
-            }
+            // 1. Total users count
+            // Use direct SQL query instead of loading wp-includes/user.php
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Counting total users for metrics, results cached via transient
+            $total_users = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->users}");
 
             $metrics[] = array(
                 'metric_name' => 'users_total',
-                'value' => (int) $total_users,
+                'value' => (int) ($total_users ? $total_users : 0),
                 'labels' => array()
             );
 
@@ -711,7 +610,32 @@ class Netwarden_Metrics {
             );
 
             // 3. Role distribution
-            $roles = isset($user_count['avail_roles']) ? $user_count['avail_roles'] : array();
+            // Use direct SQL query to count users by role
+            $role_counts = array(
+                'administrator' => 0,
+                'editor' => 0,
+                'author' => 0,
+                'contributor' => 0,
+                'subscriber' => 0
+            );
+
+            // Get all user capabilities
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Querying user roles for metrics
+            $results = $wpdb->get_results(
+                "SELECT meta_value FROM {$wpdb->usermeta}
+                WHERE meta_key = '{$wpdb->prefix}capabilities'"
+            );
+
+            foreach ((array) $results as $row) {
+                $capabilities = maybe_unserialize($row->meta_value);
+                if (is_array($capabilities)) {
+                    foreach ($role_counts as $role => $count) {
+                        if (isset($capabilities[$role])) {
+                            $role_counts[$role]++;
+                        }
+                    }
+                }
+            }
 
             $role_map = array(
                 'administrator' => 'users_role_admin',
@@ -722,10 +646,9 @@ class Netwarden_Metrics {
             );
 
             foreach ($role_map as $wp_role => $metric_name) {
-                $count = isset($roles[$wp_role]) ? $roles[$wp_role] : 0;
                 $metrics[] = array(
                     'metric_name' => $metric_name,
-                    'value' => (int) $count,
+                    'value' => (int) $role_counts[$wp_role],
                     'labels' => array('role' => $wp_role)
                 );
             }
@@ -759,27 +682,23 @@ class Netwarden_Metrics {
 
         try {
             // 1. Count active plugins (performance indicator)
-            // Using approved WordPress exception pattern: check function, load file, use immediately
-            if (!function_exists('get_plugins')) {
-                $plugin_file = ABSPATH . 'wp-admin/includes/plugin.php';
-                if (file_exists($plugin_file)) {
-                    require_once $plugin_file;
-                }
-            }
+            // Use WordPress option directly instead of loading admin files
+            $active_plugins = get_option('active_plugins', array());
+            $active_count = count($active_plugins);
 
-            // Only collect metric if function is available
-            $active_count = 0;
-            if (function_exists('get_plugins')) {
-                $all_plugins = get_plugins();
-                $active_plugins = get_option('active_plugins', array());
-                $active_count = count($active_plugins);
+            // Count total installed plugins by scanning plugin directory
+            $plugin_dir = WP_PLUGIN_DIR;
+            $total_installed = 0;
+            if (is_dir($plugin_dir)) {
+                $plugins = array_filter(glob($plugin_dir . '/*'), 'is_dir');
+                $total_installed = count($plugins);
             }
 
             $metrics[] = array(
                 'metric_name' => 'plugins_active_count',
                 'value' => (int) $active_count,
                 'labels' => array(
-                    'total_installed' => (string) count($all_plugins)
+                    'total_installed' => (string) $total_installed
                 )
             );
 
