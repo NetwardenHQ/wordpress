@@ -113,6 +113,8 @@ function netwarden_uninstall() {
     delete_option('netwarden_consecutive_errors');
     delete_option('netwarden_last_error');
     delete_option('netwarden_multisite_warning');
+    delete_option('netwarden_server_url');
+    delete_option('netwarden_last_latency_ms');
 
     // Remove all transients
     delete_transient('netwarden_activation_redirect');
@@ -160,7 +162,8 @@ function netwarden_collect_and_send_metrics() {
         }
 
         // Send to API
-        $api = new Netwarden_API($credentials['tenant_id'], $credentials['api_key']);
+        $server_url = get_option('netwarden_server_url', '');
+        $api = new Netwarden_API($credentials['tenant_id'], $credentials['api_key'], $server_url);
         $result = $api->send_metrics($metrics);
 
         // Update last submission timestamp and error tracking

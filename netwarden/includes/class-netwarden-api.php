@@ -13,9 +13,9 @@ if (!defined('ABSPATH')) {
 class Netwarden_API {
 
     /**
-     * API endpoint URL
+     * Default API server URL (SaaS)
      */
-    const API_ENDPOINT = 'https://api.netwarden.com/agent/data';
+    const DEFAULT_SERVER_URL = 'https://api.netwarden.com';
 
     /**
      * Tenant ID
@@ -28,14 +28,21 @@ class Netwarden_API {
     private $api_key;
 
     /**
+     * Server URL
+     */
+    private $server_url;
+
+    /**
      * Constructor
      *
      * @param string $tenant_id
      * @param string $api_key
+     * @param string $server_url Optional server URL for self-hosted deployments
      */
-    public function __construct($tenant_id, $api_key) {
+    public function __construct($tenant_id, $api_key, $server_url = '') {
         $this->tenant_id = $tenant_id;
         $this->api_key = $api_key;
+        $this->server_url = !empty($server_url) ? rtrim($server_url, '/') : self::DEFAULT_SERVER_URL;
     }
 
     /**
@@ -71,7 +78,8 @@ class Netwarden_API {
         $start = microtime(true);
 
         // Send request
-        $response = wp_remote_post(self::API_ENDPOINT, array(
+        $api_endpoint = $this->server_url . '/agent/data';
+        $response = wp_remote_post($api_endpoint, array(
             'headers' => array(
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer ' . $this->api_key,

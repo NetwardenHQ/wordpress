@@ -18,8 +18,15 @@
             var $message = $('#netwarden-message');
 
             // Get form data
+            var serverUrl = $('#netwarden_server_url').val().trim();
             var tenantId = $('#netwarden_tenant_id').val().trim();
             var apiKey = $('#netwarden_api_key').val().trim();
+
+            // Validate server URL if provided
+            if (serverUrl && !/^https?:\/\/.+/.test(serverUrl)) {
+                showMessage('Server URL must start with http:// or https://', 'error');
+                return;
+            }
 
             // Basic validation
             if (!tenantId || !apiKey) {
@@ -49,6 +56,7 @@
                 data: {
                     action: 'netwarden_save_credentials',
                     nonce: netwardenAdmin.nonce,
+                    server_url: serverUrl,
                     tenant_id: tenantId,
                     api_key: apiKey
                 },

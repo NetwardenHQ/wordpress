@@ -134,6 +134,9 @@ class Netwarden_Admin {
         $consecutive_errors = (int) get_option('netwarden_consecutive_errors', 0);
         $last_error = get_option('netwarden_last_error', '');
 
+        // Get server URL for self-hosted deployments
+        $server_url = get_option('netwarden_server_url', '');
+
         include NETWARDEN_PLUGIN_DIR . 'admin/views/settings-page.php';
     }
 
@@ -168,6 +171,18 @@ class Netwarden_Admin {
 
         if (strpos($api_key, 'nw_sk_') !== 0) {
             wp_send_json_error(array('message' => esc_html__('API Key must start with nw_sk_', 'netwarden')));
+        }
+
+        // Save server URL (optional, for self-hosted deployments)
+        $server_url = isset($_POST['server_url']) ? sanitize_url(wp_unslash($_POST['server_url'])) : '';
+        if (!empty($server_url)) {
+            // Validate URL format
+            if (!preg_match('#^https?://#', $server_url)) {
+                wp_send_json_error(array('message' => esc_html__('Server URL must start with http:// or https://', 'netwarden')));
+            }
+            update_option('netwarden_server_url', rtrim($server_url, '/'), false);
+        } else {
+            delete_option('netwarden_server_url');
         }
 
         // Save credentials
@@ -212,7 +227,8 @@ class Netwarden_Admin {
         }
 
         // Send to API
-        $api = new Netwarden_API($credentials['tenant_id'], $credentials['api_key']);
+        $server_url = get_option('netwarden_server_url', '');
+        $api = new Netwarden_API($credentials['tenant_id'], $credentials['api_key'], $server_url);
         $result = $api->send_metrics($metrics);
 
         if ($result['success']) {

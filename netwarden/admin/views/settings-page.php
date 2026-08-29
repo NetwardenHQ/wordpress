@@ -75,6 +75,10 @@ if (!defined('ABSPATH')) {
                     <span class="status-label"><?php esc_html_e('Tenant ID:', 'netwarden'); ?></span>
                     <span class="status-value"><?php echo esc_html($credentials['tenant_id']); ?></span>
                 </div>
+                <div class="status-item">
+                    <span class="status-label"><?php esc_html_e('Server:', 'netwarden'); ?></span>
+                    <span class="status-value"><?php echo esc_html(!empty($server_url) ? $server_url : 'Netwarden Cloud'); ?></span>
+                </div>
                 <?php if ($last_submission): ?>
                     <div class="status-item">
                         <span class="status-label"><?php esc_html_e('Last Metric Submission:', 'netwarden'); ?></span>
@@ -154,6 +158,20 @@ if (!defined('ABSPATH')) {
 
             <form id="netwarden-credentials-form">
                 <table class="form-table">
+                    <tr>
+                        <th scope="row">
+                            <label for="netwarden_server_url"><?php esc_html_e('Server URL', 'netwarden'); ?></label>
+                        </th>
+                        <td>
+                            <input type="url"
+                                   id="netwarden_server_url"
+                                   name="server_url"
+                                   class="regular-text"
+                                   placeholder="https://api.netwarden.com"
+                                   value="<?php echo esc_attr($server_url); ?>">
+                            <p class="description"><?php esc_html_e('Leave blank for Netwarden Cloud. For self-hosted, enter your server URL (e.g. http://192.168.1.100:3000)', 'netwarden'); ?></p>
+                        </td>
+                    </tr>
                     <tr>
                         <th scope="row">
                             <label for="netwarden_tenant_id"><?php esc_html_e('Tenant ID', 'netwarden'); ?></label>
