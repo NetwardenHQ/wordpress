@@ -1,93 +1,39 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the Netwarden package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
+# Copyright (C) 2026 Netwarden
+# This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Netwarden 1.0.0\n"
+"Project-Id-Version: Netwarden 1.1.0\n"
 "Report-Msgid-Bugs-To: support@netwarden.com\n"
-"POT-Creation-Date: 2025-10-20 22:37-0500\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"POT-Creation-Date: 2026-09-17T19:29:21+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: netwarden\n"
 
-#: includes/class-netwarden-admin.php:119
-msgid "You do not have sufficient permissions to access this page."
-msgstr ""
-
-#: includes/class-netwarden-admin.php:148
-#: includes/class-netwarden-admin.php:191
-#: includes/class-netwarden-admin.php:248
-msgid "Insufficient permissions"
-msgstr ""
-
-#: includes/class-netwarden-admin.php:157
-msgid "Tenant ID and API Key are required"
-msgstr ""
-
-#: includes/class-netwarden-admin.php:161
-msgid "Tenant ID must be exactly 10 alphanumeric characters"
-msgstr ""
-
-#: includes/class-netwarden-admin.php:165
-msgid "API Key is too long (maximum 200 characters)"
-msgstr ""
-
-#: includes/class-netwarden-admin.php:169
-msgid "API Key must start with nw_sk_"
-msgstr ""
-
-#: includes/class-netwarden-admin.php:176
-msgid "Credentials saved successfully"
-msgstr ""
-
-#: includes/class-netwarden-admin.php:178
-msgid "Failed to save credentials"
-msgstr ""
-
-#: includes/class-netwarden-admin.php:196
-msgid "Too many requests. Please wait before trying again."
-msgstr ""
-
-#: includes/class-netwarden-admin.php:203
-msgid "No credentials configured"
-msgstr ""
-
-#: includes/class-netwarden-admin.php:210
-msgid "No metrics collected"
-msgstr ""
-
-#: includes/class-netwarden-admin.php:224
-#, php-format
-msgid "Connection successful! Metrics sent. Latency: %sms"
-msgstr ""
-
-#: includes/class-netwarden-admin.php:234
-#, php-format
-msgid "Connection failed: %s"
-msgstr ""
-
-#: includes/class-netwarden-admin.php:263
-msgid "Credentials deleted successfully"
-msgstr ""
-
-#: includes/class-netwarden-admin.php:265
-msgid "Failed to delete credentials"
-msgstr ""
-
-#: includes/class-netwarden-admin.php:276
-msgid "Settings"
-msgstr ""
-
+#. Plugin Name of the plugin
+#. Author of the plugin
+#: netwarden.php
 #: admin/views/settings-page.php:17
 msgid "Netwarden"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: netwarden.php
+msgid "https://netwarden.com/wordpress"
+msgstr ""
+
+#. Description of the plugin
+#: netwarden.php
+msgid "Enterprise-grade infrastructure monitoring for WordPress sites with predictive alerts, automated recommendations, and health scoring. Monitor everything: database, security, performance, plugins, backups, and more."
+msgstr ""
+
+#. Author URI of the plugin
+#: netwarden.php
+msgid "https://netwarden.com"
 msgstr ""
 
 #: admin/views/settings-page.php:28
@@ -95,222 +41,372 @@ msgid "Welcome to Netwarden!"
 msgstr ""
 
 #: admin/views/settings-page.php:30
-msgid ""
-"Netwarden is an enterprise-grade infrastructure monitoring platform that "
-"helps you keep track of your WordPress site's health, performance, and "
-"security. Monitor database performance, disk usage, system updates, and more "
-"- all from a centralized dashboard."
+msgid "Netwarden is an enterprise-grade infrastructure monitoring platform that helps you keep track of your WordPress site's health, performance, and security. Monitor database performance, disk usage, system updates, and more - all from a centralized dashboard."
 msgstr ""
 
 #: admin/views/settings-page.php:33
 msgid "To get started, you'll need your Netwarden credentials:"
 msgstr ""
 
-#: admin/views/settings-page.php:36
+#. translators: %s: Link to Netwarden signup page with HTML anchor tag
+#: admin/views/settings-page.php:40
 #, php-format
 msgid "Sign up for a Netwarden account at %s"
 msgstr ""
 
-#: admin/views/settings-page.php:37
+#. translators: %s: Link to agent tokens settings page with HTML anchor tag
+#: admin/views/settings-page.php:49
 #, php-format
 msgid "Go to %s"
 msgstr ""
 
-#: admin/views/settings-page.php:37
+#: admin/views/settings-page.php:50
 msgid "Settings → Agent Tokens"
 msgstr ""
 
-#: admin/views/settings-page.php:38
+#. translators: %1$s: Bold "Tenant ID" label in HTML strong tags, %2$s: Bold "API Key" label in HTML strong tags
+#: admin/views/settings-page.php:58
 #, php-format
 msgid "Create a new agent token and copy your %1$s and %2$s"
 msgstr ""
 
-#: admin/views/settings-page.php:38 admin/views/settings-page.php:126
+#: admin/views/settings-page.php:59
+#: admin/views/settings-page.php:187
 msgid "Tenant ID"
 msgstr ""
 
-#: admin/views/settings-page.php:38 admin/views/settings-page.php:141
+#: admin/views/settings-page.php:60
+#: admin/views/settings-page.php:202
 msgid "API Key"
 msgstr ""
 
-#: admin/views/settings-page.php:39
+#: admin/views/settings-page.php:64
 msgid "Enter your credentials below to start monitoring"
 msgstr ""
 
-#: admin/views/settings-page.php:45
+#: admin/views/settings-page.php:70
 msgid "Configuration"
 msgstr ""
 
-#: admin/views/settings-page.php:50
+#: admin/views/settings-page.php:75
 msgid "Status:"
 msgstr ""
 
-#: admin/views/settings-page.php:52
+#: admin/views/settings-page.php:77
 msgid "Active"
 msgstr ""
 
-#: admin/views/settings-page.php:56
+#: admin/views/settings-page.php:81
 msgid "Tenant ID:"
 msgstr ""
 
-#: admin/views/settings-page.php:61
+#: admin/views/settings-page.php:85
+msgid "Server:"
+msgstr ""
+
+#: admin/views/settings-page.php:90
 msgid "Last Metric Submission:"
 msgstr ""
 
-#: admin/views/settings-page.php:62
+#. translators: %s: Human-readable time difference (e.g., "5 minutes")
+#: admin/views/settings-page.php:94
 #, php-format
 msgid "%s ago"
 msgstr ""
 
-#: admin/views/settings-page.php:70
+#: admin/views/settings-page.php:104
 msgid "Cron Status:"
 msgstr ""
 
-#: admin/views/settings-page.php:81
+#: admin/views/settings-page.php:115
 msgid "soon"
 msgstr ""
 
-#: admin/views/settings-page.php:84
+#. translators: %s: Number of seconds
+#: admin/views/settings-page.php:119
 #, php-format
 msgid "%s second"
 msgid_plural "%s seconds"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/views/settings-page.php:89
+#. translators: %s: Number of seconds ago
+#: admin/views/settings-page.php:125
 #, php-format
 msgid "overdue (%ss ago)"
 msgstr ""
 
-#: admin/views/settings-page.php:93
+#: admin/views/settings-page.php:129
 msgid "Stopped"
 msgstr ""
 
-#: admin/views/settings-page.php:93
+#. translators: %s: Human-readable time difference (e.g., "10 minutes")
+#: admin/views/settings-page.php:132
 #, php-format
 msgid "(last submission %s ago)"
 msgstr ""
 
-#: admin/views/settings-page.php:95
+#: admin/views/settings-page.php:135
 msgid "Scheduled"
 msgstr ""
 
-#: admin/views/settings-page.php:95
+#. translators: %s: Time until next cron run (e.g., "30 seconds", "5 minutes")
+#: admin/views/settings-page.php:138
 #, php-format
 msgid "(next run in %s)"
 msgstr ""
 
-#: admin/views/settings-page.php:98
+#: admin/views/settings-page.php:142
 msgid "WP-Cron Disabled"
 msgstr ""
 
-#: admin/views/settings-page.php:100
+#: admin/views/settings-page.php:144
 msgid "Not Scheduled"
 msgstr ""
 
-#: admin/views/settings-page.php:108
+#: admin/views/settings-page.php:152
 msgid "Send Metrics Now"
 msgstr ""
 
-#: admin/views/settings-page.php:111
+#: admin/views/settings-page.php:155
 msgid "Delete Credentials"
 msgstr ""
 
-#: admin/views/settings-page.php:117
+#. translators: %s: Link to Netwarden agent tokens page with HTML anchor tag
+#: admin/views/settings-page.php:163
 #, php-format
-msgid ""
-"Enter your Netwarden credentials to start monitoring. Get your credentials "
-"from %s"
+msgid "Enter your Netwarden credentials to start monitoring. Get your credentials from %s"
 msgstr ""
 
-#: admin/views/settings-page.php:136
+#: admin/views/settings-page.php:173
+msgid "Server URL"
+msgstr ""
+
+#: admin/views/settings-page.php:182
+msgid "Leave blank for Netwarden Cloud. For self-hosted, enter your server URL (e.g. http://192.168.1.100:3000)"
+msgstr ""
+
+#: admin/views/settings-page.php:197
 msgid "10 alphanumeric characters"
 msgstr ""
 
-#: admin/views/settings-page.php:150
+#: admin/views/settings-page.php:211
 msgid "Starts with 'nw_sk_'"
 msgstr ""
 
-#: admin/views/settings-page.php:157
+#: admin/views/settings-page.php:218
 msgid "Save Credentials"
 msgstr ""
 
-#: admin/views/settings-page.php:167
+#: admin/views/settings-page.php:228
 msgid "Monitored Metrics"
 msgstr ""
 
-#: admin/views/settings-page.php:168
-msgid ""
-"The Netwarden plugin automatically collects and sends the following metrics:"
+#: admin/views/settings-page.php:229
+msgid "The Netwarden plugin automatically collects and sends the following metrics:"
 msgstr ""
 
-#: admin/views/settings-page.php:170
-msgid "Database Health:"
+#: admin/views/settings-page.php:231
+msgid "Database:"
 msgstr ""
 
-#: admin/views/settings-page.php:170
-msgid "Connection status, query response time, database size"
+#: admin/views/settings-page.php:231
+msgid "Connection status, query latency, size, growth trend"
 msgstr ""
 
-#: admin/views/settings-page.php:171
-msgid "Disk Usage:"
+#: admin/views/settings-page.php:232
+msgid "Disk:"
 msgstr ""
 
-#: admin/views/settings-page.php:171
-msgid "Total disk space, used space, free space, usage percentage"
+#: admin/views/settings-page.php:232
+msgid "Total, used, free, usage percentage, exhaustion forecast"
 msgstr ""
 
-#: admin/views/settings-page.php:172
-msgid "WordPress Updates:"
+#: admin/views/settings-page.php:233
+msgid "Updates:"
 msgstr ""
 
-#: admin/views/settings-page.php:172
-msgid "Core updates available, plugin updates available, security updates"
+#: admin/views/settings-page.php:233
+msgid "Core (feature vs. security/maintenance), plugins, themes"
 msgstr ""
 
-#: admin/views/settings-page.php:173
-msgid "Agent Status:"
+#: admin/views/settings-page.php:234
+msgid "Security:"
 msgstr ""
 
-#: admin/views/settings-page.php:173
+#: admin/views/settings-page.php:234
+msgid "Failed logins (24 h), TLS certificate expiry, administrator count"
+msgstr ""
+
+#: admin/views/settings-page.php:235
+msgid "Performance:"
+msgstr ""
+
+#: admin/views/settings-page.php:235
+msgid "PHP memory and version, homepage load time, query count, active plugins"
+msgstr ""
+
+#: admin/views/settings-page.php:236
+msgid "Users:"
+msgstr ""
+
+#: admin/views/settings-page.php:236
+msgid "Totals, active in the last 7 days, per-role counts (no personal data)"
+msgstr ""
+
+#: admin/views/settings-page.php:237
+msgid "Health score:"
+msgstr ""
+
+#: admin/views/settings-page.php:237
+msgid "0–100 with a letter grade, from the readings above"
+msgstr ""
+
+#: admin/views/settings-page.php:238
+msgid "Integrations:"
+msgstr ""
+
+#: admin/views/settings-page.php:238
+msgid "WooCommerce, Yoast SEO, UpdraftPlus and Contact Form 7, when installed"
+msgstr ""
+
+#: admin/views/settings-page.php:239
+msgid "Agent:"
+msgstr ""
+
+#: admin/views/settings-page.php:239
 msgid "Plugin status, API latency, WP-Cron status"
 msgstr ""
 
-#: admin/views/settings-page.php:177
-#, php-format
-msgid ""
-"Metrics are collected automatically and sent to your Netwarden dashboard at "
-"%s. Collection frequency depends on your plan."
+#: admin/views/settings-page.php:246
+msgid "UpdraftPlus Integration Detected"
 msgstr ""
 
-#: admin/views/settings-page.php:184
+#: admin/views/settings-page.php:249
+msgid "Netwarden automatically monitors your UpdraftPlus backup status. We track when backups are performed and alert you if backups become stale or overdue, helping ensure your site data is always protected."
+msgstr ""
+
+#: admin/views/settings-page.php:252
+msgid "Monitored metrics:"
+msgstr ""
+
+#: admin/views/settings-page.php:253
+msgid "Last backup timestamp, hours since last backup, backup schedule compliance"
+msgstr ""
+
+#. translators: %s: Link to Netwarden dashboard with HTML anchor tag
+#: admin/views/settings-page.php:262
+#, php-format
+msgid "Metrics are collected automatically and sent to your Netwarden dashboard at %s. Collection frequency depends on your plan."
+msgstr ""
+
+#: admin/views/settings-page.php:270
 msgid "Support"
 msgstr ""
 
-#: admin/views/settings-page.php:187
+#. translators: %1$s: Link to documentation with HTML anchor tag, %2$s: Support email address with mailto link
+#: admin/views/settings-page.php:275
 #, php-format
 msgid "Need help? Visit our %1$s or contact support at %2$s"
 msgstr ""
 
-#: admin/views/settings-page.php:188
+#: admin/views/settings-page.php:276
 msgid "documentation"
 msgstr ""
 
-#: netwarden.php:51 netwarden.php:70
+#: includes/class-netwarden-admin.php:130
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+
+#: includes/class-netwarden-admin.php:163
+#: includes/class-netwarden-admin.php:218
+#: includes/class-netwarden-admin.php:282
+msgid "Insufficient permissions"
+msgstr ""
+
+#: includes/class-netwarden-admin.php:172
+msgid "Tenant ID and API Key are required"
+msgstr ""
+
+#: includes/class-netwarden-admin.php:176
+msgid "Tenant ID must be exactly 10 alphanumeric characters"
+msgstr ""
+
+#: includes/class-netwarden-admin.php:180
+msgid "API Key is too long (maximum 200 characters)"
+msgstr ""
+
+#: includes/class-netwarden-admin.php:184
+msgid "API Key must start with nw_sk_"
+msgstr ""
+
+#: includes/class-netwarden-admin.php:192
+msgid "Server URL must start with http:// or https://"
+msgstr ""
+
+#: includes/class-netwarden-admin.php:203
+msgid "Credentials saved successfully"
+msgstr ""
+
+#: includes/class-netwarden-admin.php:205
+msgid "Failed to save credentials"
+msgstr ""
+
+#: includes/class-netwarden-admin.php:223
+msgid "Too many requests. Please wait before trying again."
+msgstr ""
+
+#: includes/class-netwarden-admin.php:230
+msgid "No credentials configured"
+msgstr ""
+
+#: includes/class-netwarden-admin.php:237
+msgid "No metrics collected"
+msgstr ""
+
+#. translators: %s: API latency in milliseconds
+#: includes/class-netwarden-admin.php:254
+#, php-format
+msgid "Connection successful! Metrics sent. Latency: %sms"
+msgstr ""
+
+#. translators: %s: Error message from API
+#: includes/class-netwarden-admin.php:267
+#, php-format
+msgid "Connection failed: %s"
+msgstr ""
+
+#: includes/class-netwarden-admin.php:297
+msgid "Credentials deleted successfully"
+msgstr ""
+
+#: includes/class-netwarden-admin.php:299
+msgid "Failed to delete credentials"
+msgstr ""
+
+#: includes/class-netwarden-admin.php:313
+msgid "Settings"
+msgstr ""
+
+#: includes/class-netwarden-security.php:115
+msgid "Unauthorized"
+msgstr ""
+
+#: netwarden.php:51
+#: netwarden.php:70
 msgid "Netwarden Plugin Error"
 msgstr ""
 
 #: netwarden.php:52
-msgid ""
-"The Netwarden plugin requires the OpenSSL PHP extension, which is not "
-"available on this server."
+msgid "The Netwarden plugin requires the OpenSSL PHP extension, which is not available on this server."
 msgstr ""
 
 #: netwarden.php:53
 msgid "Please contact your hosting provider to enable the OpenSSL extension."
 msgstr ""
 
-#: netwarden.php:54 netwarden.php:73
+#: netwarden.php:54
+#: netwarden.php:73
 msgid "Return to Plugins"
 msgstr ""
 
@@ -319,9 +415,7 @@ msgid "Missing Required Extension"
 msgstr ""
 
 #: netwarden.php:71
-msgid ""
-"Failed to create the required database table. This could be due to "
-"insufficient database permissions."
+msgid "Failed to create the required database table. This could be due to insufficient database permissions."
 msgstr ""
 
 #: netwarden.php:72
@@ -332,6 +426,52 @@ msgstr ""
 msgid "Database Table Creation Failed"
 msgstr ""
 
-#: netwarden.php:138
+#: netwarden.php:170
 msgid "Every Minute"
+msgstr ""
+
+#: netwarden.php:357
+msgid "This plugin is not fully tested on WordPress Multisite installations."
+msgstr ""
+
+#: netwarden.php:360
+msgid "Metrics may be inaccurate or incomplete. For best results, install Netwarden on individual WordPress sites."
+msgstr ""
+
+#: netwarden.php:405
+msgid "WordPress Cron (WP-Cron) is disabled on this site."
+msgstr ""
+
+#: netwarden.php:408
+msgid "Netwarden collects metrics from a WP-Cron event that runs every minute. With WP-Cron disabled, a system cron job has to trigger WordPress cron events instead."
+msgstr ""
+
+#: netwarden.php:411
+msgid "Add this line to the system crontab to run every minute:"
+msgstr ""
+
+#: netwarden.php:415
+msgid "Or with wget:"
+msgstr ""
+
+#: netwarden.php:454
+msgid "Rate limit exceeded"
+msgstr ""
+
+#. translators: %d: number of consecutive failed submissions
+#: netwarden.php:505
+#, php-format
+msgid "Metric submission has failed %d time in a row."
+msgid_plural "Metric submission has failed %d times in a row."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %s: the error message from the last attempt
+#: netwarden.php:513
+#, php-format
+msgid "Last error: %s"
+msgstr ""
+
+#: netwarden.php:518
+msgid "Check Netwarden settings"
 msgstr ""

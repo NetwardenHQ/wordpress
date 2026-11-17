@@ -2,33 +2,24 @@
 Contributors: netwardenhq
 Tags: monitoring, uptime, performance, security, health-check
 Requires at least: 5.8
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0.1
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Enterprise-grade monitoring with predictive alerts, automated recommendations, and health scoring. Know about problems BEFORE they impact your site.
+Monitors your WordPress site's health, updates, security posture and performance, and sends the readings to your Netwarden dashboard every minute.
 
 == Description ==
 
-Netwarden is a lightweight, enterprise-grade monitoring plugin that helps you keep your WordPress site healthy, secure, and performant. Monitor critical metrics in real-time and receive alerts before issues impact your visitors.
+Netwarden is a lightweight monitoring plugin that reports your WordPress site's health, security posture and performance to the Netwarden platform, where you get dashboards, history and alerts. Every reading it sends is something it actually measured; when a value cannot be measured (a page that would not load, a certificate it could not read) it reports nothing rather than a zero.
 
-= Key Features =
+= What it monitors =
 
-**🤖 Predictive Intelligence & Automation**
-* Predictive disk space exhaustion alerts (30-60 days ahead using linear regression)
-* Database growth trend analysis with alerts for rapid growth
-* Overall health score (0-100 with letter grades A-F)
-* Automated recommendations engine with 8+ actionable insights
-* Proactive monitoring - catch issues BEFORE they happen
-
-**🔐 Security Monitoring**
-* Failed login attempt tracking (24-hour window)
-* SSL certificate expiry monitoring with alerts
-* Admin user count tracking for security audits
-* WordPress core file integrity checks
-* Brute force attack detection
+**🔐 Security**
+* Failed login attempts in the last 24 hours
+* TLS certificate expiry (days remaining, issuer)
+* Number of administrator accounts
 
 **📊 Database & Performance**
 * Database latency and connection status monitoring
@@ -40,10 +31,8 @@ Netwarden is a lightweight, enterprise-grade monitoring plugin that helps you ke
 * Slow query detection (>1 second queries)
 
 **🔄 WordPress Updates**
-* WordPress core update detection
-* Plugin update tracking with premium plugin support
-* Theme update tracking
-* Security update identification
+* WordPress core update detection, distinguishing point releases (security and maintenance) from feature releases
+* Plugin and theme updates pending, as WordPress itself reports them
 
 **👥 User Activity Monitoring**
 * Total user count tracking
@@ -51,41 +40,29 @@ Netwarden is a lightweight, enterprise-grade monitoring plugin that helps you ke
 * User role distribution (admin, editor, author, contributor, subscriber)
 * Last login timestamp tracking
 
-**🏥 Site Health Integration**
-* WordPress Site Health API integration
-* Health score tracking (0-100 scale)
-* Critical issues detection
-* Recommended improvements tracking
+**🏥 Health score and trends**
+* A 0–100 health score with a letter grade, computed from the readings above (security, performance, pending updates, capacity, backups)
+* Disk-space exhaustion forecast: once a week of hourly samples exists, a linear trend projects when the disk reaches 95%
+* Database growth rate, when it exceeds 10 MB a day
 
-**🔌 Plugin Integrations**
-* **WooCommerce**: Sales tracking, order counts, product inventory, stock alerts
-* **Yoast SEO**: Average SEO score monitoring
-* **UpdraftPlus**: Backup staleness monitoring
-* **Contact Form 7**: Active forms tracking
+**🔌 Plugin integrations** (only when the plugin is installed)
+* **WooCommerce**: 30-day revenue from completed and processing orders, pending and processing order counts, published products, out-of-stock products — on both classic and High-Performance Order Storage
+* **Yoast SEO**: average SEO score across posts
+* **UpdraftPlus**: hours since the last backup
+* **Contact Form 7**: number of published forms
 
-**💡 Automated Recommendations**
-* Performance recommendations (plugin count, slow queries, memory usage)
-* Security recommendations (failed logins, admin accounts, unused themes)
-* Maintenance recommendations (pending updates, backup staleness)
-* E-commerce recommendations (WooCommerce out-of-stock alerts)
-* Capacity recommendations (disk space warnings, cleanup suggestions)
+= Why Netwarden =
 
-= Why Choose Netwarden? =
+* **Lightweight**: one WP-Cron event a minute; the expensive readings (database size, certificate, page load, user counts) are cached for minutes to hours
+* **Honest**: a reading that could not be taken is absent, never a made-up zero
+* **Secure**: HTTPS to the platform, credentials encrypted at rest with AES-256-GCM under your site's auth salt
+* **Self-hosted friendly**: point it at your own Netwarden server
 
-* **Lightweight**: <1% CPU overhead - won't slow down your site
-* **Secure**: Encrypted API communication, no third-party data sharing
-* **Privacy-First**: Your data stays on YOUR infrastructure
-* **WordPress Standards**: Follows WordPress coding standards and best practices
-* **Real-Time Monitoring**: Minute-by-minute metric collection
-* **Predictive**: Know about issues 30-60 days before they become critical
+= Good for =
 
-= Perfect For =
-
-* Individual site owners who want peace of mind
-* WordPress agencies managing multiple client sites
-* E-commerce sites running WooCommerce
-* Privacy-conscious organizations (GDPR/CCPA compliant)
-* Mission-critical WordPress installations
+* Site owners who want to know before something breaks
+* Agencies watching many client sites from one dashboard
+* WooCommerce stores
 
 == External Services ==
 
@@ -136,10 +113,10 @@ This plugin relies on external services to function properly. Below is a complet
 
 1. Upload the `netwarden` folder to `/wp-content/plugins/`
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Navigate to **Settings > Netwarden** to configure
-4. Get your free API key from [netwarden.com](https://netwarden.com)
-5. Enter your Tenant ID and API Key
-6. Click "Test Connection" to verify setup
+3. Open **Netwarden** in the admin menu
+4. Get your Tenant ID and API key from [app.netwarden.com/settings/tokens](https://app.netwarden.com/settings/tokens)
+5. Enter them and save
+6. Click "Send Metrics Now" to confirm the connection
 
 That's it! Metrics will begin collecting every minute automatically.
 
@@ -167,7 +144,7 @@ Yes. All API communication is encrypted via HTTPS, and your data is stored secur
 
 = Does this plugin send data to external services? =
 
-Yes, this plugin requires a Netwarden account and sends monitoring data to https://app.netwarden.com/agent. All communication is encrypted via HTTPS. This is required for the plugin to function. See our Privacy Policy at https://netwarden.com/privacy for details.
+Yes, this plugin requires a Netwarden account and sends monitoring data to https://api.netwarden.com/agent/data (or to your own server if you configure one). All communication is encrypted via HTTPS. This is required for the plugin to function. See our Privacy Policy at https://netwarden.com/privacy for details.
 
 = How often are metrics collected? =
 
@@ -175,16 +152,31 @@ Metrics are collected every minute via WP-Cron for real-time monitoring.
 
 = What metrics are collected? =
 
-The plugin collects: database health metrics (latency, size, connection status), disk usage statistics, WordPress version information, update availability (core, plugins, themes), security metrics (failed logins, SSL status, file integrity), performance metrics (PHP memory, page load time, query counts), user activity, and plugin-specific data (WooCommerce, Yoast SEO, etc.). No personal user data is collected.
+The plugin collects: database health metrics (latency, size, connection status), disk usage statistics, WordPress version information, update availability (core, plugins, themes), security metrics (failed logins, TLS certificate expiry, administrator count), performance metrics (PHP memory, page load time, query counts), user activity counts, and plugin-specific data (WooCommerce, Yoast SEO, UpdraftPlus, Contact Form 7). No personal user data is collected.
 
 == Screenshots ==
 
 1. Admin settings page - Simple configuration with API key setup
 2. Netwarden dashboard - View all your metrics in one place
-3. Security metrics - Monitor failed logins, SSL expiry, file integrity
+3. Security metrics - Monitor failed logins, TLS expiry, administrator accounts
 4. WordPress updates tracking - Stay on top of core, plugin, and theme updates
 
 == Changelog ==
+
+= 1.1.0 =
+* Fixed: security-update detection was backwards — a new feature release was flagged as a security update and a pending point release (where WordPress ships security fixes) was not.
+* Fixed: WooCommerce revenue and order counts read nothing on stores using High-Performance Order Storage (the default since WooCommerce 8.2) and reported $0 in sales. Revenue now counts completed and processing orders only.
+* Fixed: the 24-hour failed-login count never expired unless another login failed.
+* Fixed: the TLS certificate was never checked when WP-Cron ran from a system cron or WP-CLI.
+* Fixed: a homepage that failed to load was reported as a 0 ms page load; a health score that could not be computed was reported as 50 (C). Both are now simply absent.
+* Fixed: WP-Cron self-heal ran on every front-end request; it now runs on admin and cron requests only.
+* Fixed: the admin script was loaded twice on the settings page.
+* Fixed: uninstall left options, transients and user meta behind.
+* Changed: trend history is sampled hourly instead of every minute — the option it lives in was growing to ~1.7 MB and being rewritten on every run. Forecasts now require a week of data by time span rather than by sample count.
+* Changed: user counts come from WordPress's aggregate query instead of loading every user; the plugin's heaviest query on large membership sites is gone.
+* Changed: credentials are stored with AES-256-GCM (authenticated); existing entries are read and rewritten on the next save.
+* Changed: the plugin identifies itself with a User-Agent, sends latency only once it has measured one, and no longer guesses the host's Linux distribution.
+* Removed from the description: claims of core file integrity checks, brute-force detection, Site Health integration and a recommendations engine, none of which the plugin implemented.
 
 = 1.0.0 =
 * Initial public release
